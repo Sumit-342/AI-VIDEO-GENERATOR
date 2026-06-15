@@ -1,5 +1,10 @@
 from playwright.sync_api import sync_playwright
 from utils import clean_list , clean_text
+from importance_engine import rank_importance
+from purpose_engine import detect_purpose
+from cleaner import clean_website_data
+import json
+
 
 def extact_title(page) :
     return page.title()
@@ -85,13 +90,13 @@ def extract_website_data(url) :
 
         title = extact_title(page)
         headings = exract_heading(page)
-        print(len(headings))
+        
 
         button = extract_buttons(page)
-        print(len(button))
+       
 
         links = extract_links(page)
-        print(len(links))
+        
 
         # cleaning 
         
@@ -112,6 +117,8 @@ def extract_website_data(url) :
                     "text" : text ,
                     "url" : url ,
                 })
+        
+
 
         data =  {
             "title" : title,
@@ -120,10 +127,16 @@ def extract_website_data(url) :
             "links" : clean_link ,
         }
 
+
         browser.close()
         return data
 
 if __name__ == "__main__" :
     url = input("Enter URL : ")
     data = extract_website_data(url)
-    print(data)
+
+    clean_data = clean_website_data(data)
+
+    purpose = detect_purpose(clean_data)
+    scenes = rank_importance(clean_data , purpose)
+    print(json.dumps(scenes , indent = 2))

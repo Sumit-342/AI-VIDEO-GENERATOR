@@ -2,10 +2,11 @@ def clean_text(text) :
     if not text :
         return None
 
+    text = str(text)
     text = text.strip()
     text = " ".join(text.split())
 
-    if text == "" :
+    if text == "" or text == "|" :
         return None
     
     return text
