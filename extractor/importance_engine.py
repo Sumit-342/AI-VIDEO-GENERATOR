@@ -123,13 +123,15 @@ def _parse_response(text: str) -> dict:
 
 def _validate_scenes(data: dict) -> dict:
     """Ensure scene output is well-formed with sane defaults."""
-    valid_types = {"hero", "about", "projects", "skills", "cta", "contact", "other", "noise"}
+    # Accept any type LLM invents — only noise is special
+    valid_types = None  # dynamic — no whitelist
     scenes = data.get("scenes", [])
     cleaned = []
 
     for i, scene in enumerate(scenes):
         scene_type = scene.get("type", "other").lower()
-        if scene_type not in valid_types:
+        # No whitelist — LLM invents meaningful types dynamically
+        if not scene_type:
             scene_type = "other"
 
         cleaned.append({
@@ -177,8 +179,9 @@ def rank_importance(clean_data: dict, purpose_data: dict, retries: int = 3) -> d
 
     # Step 2 — build compact prompt
     elements_text = _build_elements_text(scored_elements)
+    purpose = purpose_data.get("purpose", "other")
     prompt = IMPORTANCE_RANKING_PROMPT.format(
-        purpose=purpose_data.get("purpose", "other"),
+        purpose=purpose,
         primary_goal=purpose_data.get("primary_goal", "unknown"),
         elements=elements_text,
     )
@@ -219,7 +222,7 @@ def rank_importance(clean_data: dict, purpose_data: dict, retries: int = 3) -> d
 
 # if __name__ == "__main__":
 #     from cleaner import clean_website_data
-#     from purpose_engine import detect_purpose
+#     from purpose_detector import detect_purpose
 
 #     raw_data = {
 #         "title": "Sumit | Full Stack Developer",
