@@ -4,18 +4,22 @@ def extact_title(page) :
     return page.title()
 
 def exract_heading(page) :
-    headings = []
+    heading = []
+    tags = ["h1" , "h2" , "h3"]
 
-    h1_elements = page.locator("h1")
-    count = h1_elements.count()
+    for tag in tags :
+        elements = page.locator(tag)
+        count = elements.count()
 
-    for i in range(count):
+        for i in range(count) :
+            element = elements.nth(i)
+            text = element.text_content()
 
-        heading = h1_elements.nth(i)
-        text = heading.text_content()
-        headings.append(text)
+            if text :
+                heading.append(text.strip())
+    
+    return heading
 
-    return headings
 
 def extract_buttons(page) :
     pass
@@ -35,6 +39,7 @@ def extract_website_data(url) :
         page.goto(url)
         title = extact_title(page)
         headings = exract_heading(page)
+        print(len(headings))
         browser.close()
 
         return {
