@@ -1,10 +1,17 @@
 from playwright.sync_api import sync_playwright
+from utils import clean_list , clean_text
 
 def extact_title(page) :
     return page.title()
 
+
 def exract_heading(page) :
-    heading = []
+    result = {
+        "h1" : [] ,
+        "h2" : [] ,
+        "h3" : [] ,
+    }
+
     tags = ["h1" , "h2" , "h3"]
 
     for tag in tags :
@@ -16,9 +23,9 @@ def exract_heading(page) :
             text = element.text_content()
 
             if text :
-                heading.append(text.strip())
+                result[tag].append(text)
     
-    return heading
+    return result
 
 
 def extract_buttons(page) :
@@ -71,6 +78,11 @@ def extract_website_data(url) :
         page = context.new_page()
         page.goto(url)
 
+        page.wait_for_load_state("domcontentloaded")
+        page.wait_for_timeout(1000)
+
+        # raw extraction
+
         title = extact_title(page)
         headings = exract_heading(page)
         print(len(headings))
@@ -78,17 +90,38 @@ def extract_website_data(url) :
         button = extract_buttons(page)
         print(len(button))
 
-        link = extract_links(page)
-        print(len(link))
+        links = extract_links(page)
+        print(len(links))
 
-        browser.close()
+        # cleaning 
+        
+        button = clean_list(button)
 
-        return {
+        headings["h1"] = clean_list(headings["h1"])
+        headings["h2"] = clean_list(headings["h2"])
+        headings["h3"] = clean_list(headings["h3"])
+
+        clean_link = []
+
+        for link in links :
+            text = clean_text(link.get("text"))
+            url = link.get("url")
+
+            if text and url :
+                clean_link.append({
+                    "text" : text ,
+                    "url" : url ,
+                })
+
+        data =  {
             "title" : title,
             "heading" : headings,
             "buttons" : button ,
-            "links" : link ,
+            "links" : clean_link ,
         }
+
+        browser.close()
+        return data
 
 if __name__ == "__main__" :
     url = input("Enter URL : ")
