@@ -22,7 +22,19 @@ def exract_heading(page) :
 
 
 def extract_buttons(page) :
-    pass
+    buttons = []
+
+    button_element = page.locator('button')
+    count = button_element.count()
+
+    for i in range(count) :
+        button = button_element.nth(i)
+        text = button.text_content()
+
+        if text :
+            buttons.append(text.strip())
+
+    return buttons
 
 def extract_links(page) :
     pass
@@ -40,11 +52,14 @@ def extract_website_data(url) :
         title = extact_title(page)
         headings = exract_heading(page)
         print(len(headings))
+        button = extract_buttons(page)
+        print(len(button))
         browser.close()
 
         return {
             "title" : title,
-            "heading" : headings
+            "heading" : headings,
+            "buttons" : button ,
         }
 
 if __name__ == "__main__" :
