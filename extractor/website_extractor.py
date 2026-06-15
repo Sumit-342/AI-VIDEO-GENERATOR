@@ -37,7 +37,28 @@ def extract_buttons(page) :
     return buttons
 
 def extract_links(page) :
-    pass
+    links = []
+    link_element = page.locator('a')
+    count = link_element.count()
+
+    for i in range(count) :
+        element = link_element.nth(i)
+
+        text = element.text_content()
+        href = element.get_attribute('href')
+
+        if text :
+            text = text.strip()
+
+        if text and href :
+            links.append({
+                "text" : text,
+                "url" : href,
+            })
+
+
+    return links
+
 
 def extract_website_data(url) :
     with sync_playwright() as p :
@@ -49,17 +70,24 @@ def extract_website_data(url) :
 
         page = context.new_page()
         page.goto(url)
+
         title = extact_title(page)
         headings = exract_heading(page)
         print(len(headings))
+
         button = extract_buttons(page)
         print(len(button))
+
+        link = extract_links(page)
+        print(len(link))
+
         browser.close()
 
         return {
             "title" : title,
             "heading" : headings,
             "buttons" : button ,
+            "links" : link ,
         }
 
 if __name__ == "__main__" :
