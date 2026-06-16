@@ -111,9 +111,14 @@ async def _extract_page(page: Page, url: str) -> dict:
     Single Playwright pass — no duplicate DOM lookups.
     """
     viewport = page.viewport_size or {"width": 1280, "height": 720}
+    page_height = await page.evaluate("document.body.scrollHeight")
+    viewport_height = page.viewport_size["height"]
     title    = await page.title()
     elements = []
 
+    for y in range(0 , page_height , viewport_height) :
+        await page.evaluate(f"window.scrollTo(0,{y})")
+        await page.wait_for_timeout(400)
     
 
     for tag, selector in EXTRACT_TAGS.items():
