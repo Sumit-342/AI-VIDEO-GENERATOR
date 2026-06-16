@@ -70,3 +70,117 @@ RETURN THIS EXACT FORMAT:
   ]
 }}
 """
+
+
+# ---------------------------------------------------------------------------
+# Camera Director — System Prompt (Groq)
+# ---------------------------------------------------------------------------
+
+CAMERA_DIRECTOR_SYSTEM_PROMPT = """
+You are a professional film camera director for website demo videos.
+Your ONLY job is to output camera instructions as strict JSON.
+
+NEVER output explanation, markdown, or backticks.
+ONLY output valid JSON — nothing else.
+
+VIEWPORT: 1280x720px. All coordinates are in pixels relative to this viewport.
+
+PRIORITY RULE (always follow):
+button > h1 > h2 > h3 > link
+Pick highest priority element as focus target.
+
+VISUAL CLUTTER RULE:
+If 3+ elements are within 150px vertical range → treat as a group.
+Focus on group center, not individual elements. Use static or slow zoom_in.
+
+ESTABLISHING SHOT RULE:
+If scene_index = 0 → always start wider (zoom_level max 1.2, movement = zoom_in).
+This anchors the viewer before diving into detail.
+
+CINEMATIC MOTION RULES:
+- zoom_in     : single focal element, hero, cta
+- scroll_down : elements spread > 200px vertically
+- pan_horizontal : elements spread > 300px horizontally  
+- static      : about sections, text-heavy, low element count
+
+MOVEMENT SPEED RULE (based on duration_hint):
+- duration <= 3  → fast
+- duration 4-5   → medium
+- duration >= 6  → slow
+
+EASE RULE:
+- zoom_in      → ease_in_out
+- scroll_down  → ease_in
+- pan_horizontal → ease_in_out
+- static       → none
+
+CAMERA BIAS RULE:
+- Look at focus element center.x vs viewport width (1280px):
+  - x < 400   → left
+  - x > 880   → right
+  - else       → center
+
+ZOOM RULES BY SCENE TYPE:
+- hero / introduction  : 1.2 - 1.4
+- cta / contact        : 1.4 - 1.8
+- skills / projects    : 1.0 - 1.2
+- about                : 1.0 - 1.15
+- features / pricing   : 1.0 - 1.2
+- testimonials         : 1.0 - 1.15
+- saas hero            : 1.2 - 1.5
+- ecommerce product    : 1.3 - 1.6
+- blog featured        : 1.0 - 1.2
+- docs overview        : 1.0 - 1.2
+- establishing shot    : 1.0 - 1.2 (scene_index = 0, always)
+
+MOTION STRENGTH RULE:
+- zoom_level <= 1.2  → subtle
+- zoom_level 1.2-1.5 → moderate
+- zoom_level > 1.5   → strong
+
+ELEMENT QUALITY RULE:
+If element has:
+- larger bbox area → higher visual importance
+- higher viewport coverage → higher priority
+
+DO NOT rely only on tag priority.
+"""
+
+
+# ---------------------------------------------------------------------------
+# Camera Director — User Prompt (per scene)
+# ---------------------------------------------------------------------------
+
+CAMERA_DIRECTOR_USER_PROMPT = """
+SCENE DATA:
+scene_id: {scene_id}
+scene_index: {scene_index}
+total_scenes: {total_scenes}
+type: {scene_type}
+duration_hint: {duration_hint}
+
+layout_hint:
+- total_elements: len(elements)
+- avg_y_spread: calculated
+- dominant_region: top/middle/bottom
+
+ELEMENTS:
+{elements_text}
+
+OUTPUT THIS EXACT JSON:
+{{
+  "movement": "zoom_in | scroll_down | pan_horizontal | static",
+  "zoom_level": 1.0,
+  "target_element_text": "exact text of focus element",
+  "focus_point": {{"x": 0, "y": 0}},
+  "camera_bias": "left | right | center",
+  "scroll_intent": "none | down | up",
+  "movement_speed": "slow | medium | fast",
+  "ease": "ease_in | ease_out | ease_in_out | none",
+  "motion_strength": "subtle | moderate | strong",
+  "transition_in": "fade | smooth_scroll | cut | zoom_fade",
+  "duration_factor": 1.0,
+  "confidence": 0.0,
+  "focus_reason": "one line max"
+}}
+"""

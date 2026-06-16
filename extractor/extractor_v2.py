@@ -7,6 +7,7 @@ from importance_engine import rank_importance
 from purpose_engine import detect_purpose
 from cleaner import clean_website_data
 from scene_builder import attach_coordinates
+from camera_engine import generate_camera_plan
 
 # ---------------------------------------------------------------------------
 # Config
@@ -219,7 +220,8 @@ async def _main():
     scenes = rank_importance(clean_data , purpose)
 
     enriched_scenes = attach_coordinates(scenes ,unified)
-    print(json.dumps(enriched_scenes , indent=2))
+    final = generate_camera_plan(enriched_scenes)
+    print(json.dumps(final , indent=2))
     
 
 
