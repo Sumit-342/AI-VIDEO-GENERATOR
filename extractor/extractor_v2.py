@@ -1,6 +1,7 @@
 import asyncio
 import json
 import uuid
+import hashlib
 from datetime import datetime, timezone
 from playwright.async_api import async_playwright, Page, ElementHandle
 from importance_engine import rank_importance
@@ -8,6 +9,7 @@ from purpose_engine import detect_purpose
 from cleaner import clean_website_data
 from scene_builder import attach_coordinates
 from camera_engine import generate_camera_plan
+from cache_manager import load_cache , set_cache , get_cache , save_cache
 
 # ---------------------------------------------------------------------------
 # Config
@@ -112,35 +114,48 @@ async def _extract_page(page: Page, url: str) -> dict:
     viewport = page.viewport_size or {"width": 1280, "height": 720}
     page_height = await page.evaluate("document.body.scrollHeight")
     
-    old_height = page_height
+    
 
     viewport_height = page.viewport_size["height"]
+    step = viewport_height //2
     title = await page.title()
     elements = []
 
     # Trigger lazy-loaded content by scrolling through the whole page once
-    for y in range(0, page_height, viewport_height):
+    for y in range(0, page_height, step):
         await page.evaluate(f"window.scrollTo(0,{y})")
-        await page.wait_for_timeout(400)
+        await page.wait_for_timeout(300)
 
+    
+
+# STEP 1: go top and freeze
+    await page.evaluate("window.scrollTo(0, 0)")
+    await page.wait_for_timeout(800)
+
+    # STEP 2: disable smooth scroll (important)
+    await page.add_style_tag(content="""
+    html {
+    scroll-behavior: auto !important;
+    }
+    """)
+
+    await page.wait_for_timeout(800)
 
     # recalulate height 
 
-    page_height = await page.evaluate("document.body.scrollHeight")
-    print(f"\nOLD HEIGHT :{old_height}")
-    print(f"NEW HEIGHT :{ page_height}\n")
+    # page_height = await page.evaluate("document.body.scrollHeight")
 
     # IMPORTANT — reset scroll to top before extracting.
     # Without this, bbox.y values are captured relative to whatever
     # scroll position the loop ended on, and the page is left in a
     # "dirty" mid-scroll state for the next stage (playback).
-    await page.evaluate("window.scrollTo(0, 0)")
-    await page.wait_for_timeout(500)
+    # await page.evaluate("window.scrollTo(0, 0)")
+    # await page.wait_for_timeout(500)
 
     # Re-check page height AFTER lazy load — frameworks often grow
     # the DOM (infinite scroll, images loading) which shifts later
     # element positions if measured before this point.
-    page_height = await page.evaluate("document.body.scrollHeight")
+    # page_height = await page.evaluate("document.body.scrollHeight")
 
     for tag, selector in EXTRACT_TAGS.items():
         handles = await page.query_selector_all(selector)
@@ -220,7 +235,14 @@ async def extract_website(url: str) -> tuple[dict, dict]:
         await page.goto(url, wait_until="domcontentloaded", timeout=30000)
 
         # Let JS render finish
+        await page.wait_for_load_state("domcontentloaded")
         await page.wait_for_timeout(1500)
+        
+        await page.add_init_script("""
+                                   window.stop();
+                                   """)
+
+        await page.wait_for_timeout(1000)
 
         unified = await _extract_page(page, url)
         legacy  = to_legacy_format(unified)
@@ -234,6 +256,7 @@ async def extract_website(url: str) -> tuple[dict, dict]:
 # ---------------------------------------------------------------------------
 
 async def _main():
+    load_cache()
     url = input("Enter URL: ").strip()
     unified, legacy = await extract_website(url)
 
@@ -246,7 +269,19 @@ async def _main():
     scenes = rank_importance(clean_data , purpose)
 
     enriched_scenes = attach_coordinates(scenes ,unified)
-    final = generate_camera_plan(enriched_scenes)
+
+    key = hashlib.md5(
+        json.dumps(enriched_scenes, sort_keys=True).encode()
+    ).hexdigest()
+    cached = get_cache(key)
+
+    if cached :
+        print("CACHE HIT - Skipping Gemini")
+        final = cached
+    else :
+        print("CACHE MISS - Calling Gemini")
+        final = generate_camera_plan(enriched_scenes)
+        set_cache(key , final)
     print(json.dumps(final , indent=2))
     
 
