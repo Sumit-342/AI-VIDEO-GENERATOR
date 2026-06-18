@@ -3,6 +3,8 @@ import json
 import time
 import logging
 from google import genai
+from openai import OpenAI
+from groq import Groq
 from dotenv import load_dotenv
 from prompts import IMPORTANCE_RANKING_PROMPT
 
@@ -17,6 +19,66 @@ logger = logging.getLogger(__name__)
 client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 MODEL = "gemini-2.5-flash-lite"
 
+
+# deepseek
+deepseek_client = OpenAI(
+    api_key=os.getenv("DEEPSEEK_API_KEY"),
+    base_url="https://integrate.api.nvidia.com/v1",
+)
+
+DEEPSEEK_MODEL = "deepseek-ai/deepseek-v4-pro"
+
+#groq
+groq_client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+GROQ_MODEL = "llama-3.3-70b-versatile"
+
+
+def call_gemini(prompt):
+    return client.models.generate_content(
+        model=MODEL,
+        contents=prompt
+    ).text
+
+
+def call_deepseek(prompt):
+    res = deepseek_client.chat.completions.create(
+        model=DEEPSEEK_MODEL,
+        messages=[{"role": "user", "content": prompt}]
+    )
+    return res.choices[0].message.content
+
+
+
+def call_groq(prompt):
+    res = groq_client.chat.completions.create(
+        model=GROQ_MODEL,
+        messages=[{"role": "user", "content": prompt}]
+    )
+    return res.choices[0].message.content
+
+
+def run_with_fallback(prompt, retries=3):
+    providers = [
+        ("gemini", call_gemini),
+        ("deepseek", call_deepseek),
+        ("groq", call_groq),
+    ]
+
+    for name, provider in providers:
+        logger.info(f"🚀 Trying provider: {name}")
+
+        for attempt in range(1, retries + 1):
+            try:
+                raw = provider(prompt)
+                logger.info(f"✅ Success from {name}")
+                return raw, name
+
+            except Exception as e:
+                logger.warning(f"❌ {name} attempt {attempt} failed: {e}")
+
+                time.sleep(2 ** attempt)
+
+    return None, "fallback"
 # ---------------------------------------------------------------------------
 # Heuristic Pre-Scorer
 # ---------------------------------------------------------------------------
@@ -193,13 +255,15 @@ def rank_importance(clean_data: dict, purpose_data: dict, retries: int = 3) -> d
         try:
             logger.info(f"Importance ranking attempt {attempt}...")
 
-            response = client.models.generate_content(
-                model=MODEL,
-                contents=prompt,
-            )
+            raw, provider_used = run_with_fallback(prompt, retries)
+            if not raw:
+                logger.error("All providers failed")
+                return {"scenes": [], "skipped_noise": []}
 
-            parsed = _parse_response(response.text)
+            parsed = _parse_response(raw)
             validated = _validate_scenes(parsed)
+
+            validated["provider_used"] = provider_used
             return validated
 
         except json.JSONDecodeError as e:
@@ -220,27 +284,27 @@ def rank_importance(clean_data: dict, purpose_data: dict, retries: int = 3) -> d
 # Quick test
 # ---------------------------------------------------------------------------
 
-# if __name__ == "__main__":
-#     from cleaner import clean_website_data
-#     from purpose_detector import detect_purpose
+if __name__ == "__main__":
+    from cleaner import clean_website_data
+    from purpose_engine import detect_purpose
 
-#     raw_data = {
-#         "title": "Sumit | Full Stack Developer",
-#         "heading": {
-#             "h1": ["Hi, I'm Sumit", "I Build Things for the Web"],
-#             "h2": ["About Me", "My Projects", "Skills", "Contact Me"],
-#             "h3": ["Resume Analyzer", "AI Video Generator", "Portfolio Website", "React", "Python", "Node.js"],
-#         },
-#         "buttons": ["View Projects", "Download CV", "Hire Me", "Contact Me"],
-#         "links": [
-#             {"text": "GitHub",   "url": "https://github.com/sumit"},
-#             {"text": "LinkedIn", "url": "https://linkedin.com/in/sumit"},
-#             {"text": "Privacy Policy", "url": "https://example.com/privacy"},
-#         ],
-#     }
+    raw_data = {
+        "title": "Sumit | Full Stack Developer",
+        "heading": {
+            "h1": ["Hi, I'm Sumit", "I Build Things for the Web"],
+            "h2": ["About Me", "My Projects", "Skills", "Contact Me"],
+            "h3": ["Resume Analyzer", "AI Video Generator", "Portfolio Website", "React", "Python", "Node.js"],
+        },
+        "buttons": ["View Projects", "Download CV", "Hire Me", "Contact Me"],
+        "links": [
+            {"text": "GitHub",   "url": "https://github.com/sumit"},
+            {"text": "LinkedIn", "url": "https://linkedin.com/in/sumit"},
+            {"text": "Privacy Policy", "url": "https://example.com/privacy"},
+        ],
+    }
 
-#     clean   = clean_website_data(raw_data)
-#     purpose = detect_purpose(clean)
-#     result  = rank_importance(clean, purpose)
+    clean   = clean_website_data(raw_data)
+    purpose = detect_purpose(clean)
+    result  = rank_importance(clean, purpose)
 
-#     print(json.dumps(result, indent=2))
+    print(json.dumps(result, indent=2))
