@@ -3,9 +3,10 @@ from typing import Any
 
 
 # ---------------------------------------------------------------------------
-# Constants
+# Constants & Regex Patterns
 # ---------------------------------------------------------------------------
 
+# Website ke unwanted elements (noise) ko filter karne ke liye patterns
 NOISE_PATTERNS: list[re.Pattern] = [
     re.compile(p, re.IGNORECASE)
     for p in [
@@ -34,6 +35,7 @@ NOISE_PATTERNS: list[re.Pattern] = [
     ]
 ]
 
+# Navigational junk links ko spot karne ke liye patterns
 INVALID_URL_PATTERNS: list[re.Pattern] = [
     re.compile(p, re.IGNORECASE)
     for p in [
@@ -51,7 +53,7 @@ MULTI_SPACE_RE = re.compile(r"\s+")
 
 
 # ---------------------------------------------------------------------------
-# Low-level text helpers
+# Low-Level Text Helpers
 # ---------------------------------------------------------------------------
 
 def _clean_text(value: Any) -> str:
@@ -62,23 +64,23 @@ def _clean_text(value: Any) -> str:
         except Exception:
             return ""
 
-    # Remove newlines/tabs → single space
+    # Remove newlines/tabs → convert to single space
     value = value.replace("\n", " ").replace("\t", " ").replace("\r", " ")
-    # Strip junk characters
+    # Strip layout junk characters like |, <, >, {, }, etc.
     value = JUNK_CHARS_RE.sub("", value)
-    # Collapse multiple spaces
+    # Collapse multiple spaces into one
     value = MULTI_SPACE_RE.sub(" ", value).strip()
     return value
 
 
 def _is_meaningful(text: str) -> bool:
-    """Return True only if text carries real content."""
+    """Return True only if text carries real cinematic content."""
     if not text or len(text) < 2:
         return False
-    # Only whitespace/punctuation
+    # Only whitespace or symbols/punctuation patterns are dropped
     if re.fullmatch(r"[\W\d]+", text):
         return False
-    # Noise pattern match
+    # Check if text matches any layout noise (like Cookie Banner text)
     for pattern in NOISE_PATTERNS:
         if pattern.search(text):
             return False
@@ -97,11 +99,11 @@ def _is_valid_url(url: Any) -> bool:
 
 
 # ---------------------------------------------------------------------------
-# Collection-level cleaners
+# Collection-Level Cleaners
 # ---------------------------------------------------------------------------
 
 def _clean_text_list(items: Any) -> list[str]:
-    """Clean and deduplicate a list of text strings."""
+    """Clean and deduplicate a list of text strings (buttons/lists)."""
     if not isinstance(items, list):
         return []
 
@@ -162,13 +164,13 @@ def _clean_links(links: Any) -> list[dict[str, str]]:
 
 
 def _clean_title(title: Any) -> str:
-    """Clean the page title."""
+    """Clean the page title safely."""
     cleaned = _clean_text(title)
     return cleaned if _is_meaningful(cleaned) else ""
 
 
 # ---------------------------------------------------------------------------
-# Public entry point
+# Public Entry Point
 # ---------------------------------------------------------------------------
 
 def clean_website_data(data: dict) -> dict:
@@ -176,7 +178,7 @@ def clean_website_data(data: dict) -> dict:
     Clean raw website extraction output for AI video scene generation.
 
     Args:
-        data: Raw structured data from Playwright extractor.
+        data: Raw structured data from Playwright legacy output.
 
     Returns:
         Fully cleaned dictionary with no noise, duplicates, or empty values.
@@ -198,7 +200,7 @@ def clean_website_data(data: dict) -> dict:
 
 
 # ---------------------------------------------------------------------------
-# Quick smoke test
+# Quick Smoke Test
 # ---------------------------------------------------------------------------
 
 if __name__ == "__main__":

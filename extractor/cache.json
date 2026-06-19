@@ -1,3 +1,717 @@
 {
-    
+  "cf493b664b8e6c4182fc9692a5aa3601": [
+    {
+      "scene_id": 1,
+      "type": "hero introduction",
+      "title": "Your AI Developer Introduction",
+      "content": "Hello, I'm Sumit, an AI Developer. I'm excited to show you what I can do.",
+      "priority": 10,
+      "duration_hint": 5,
+      "elements": [
+        {
+          "id": "el_5b18ad2b",
+          "text": "Sumit",
+          "tag": "h1",
+          "bbox": {
+            "x": 484,
+            "y": 220,
+            "width": 667,
+            "height": 78
+          },
+          "center": {
+            "x": 817.5,
+            "y": 259.0
+          }
+        },
+        {
+          "id": "el_95cb30a1",
+          "text": "Hello, I'm",
+          "tag": "h3",
+          "bbox": {
+            "x": 484,
+            "y": 164,
+            "width": 667,
+            "height": 56
+          },
+          "center": {
+            "x": 817.5,
+            "y": 192.0
+          }
+        },
+        {
+          "id": "el_c073a05a",
+          "text": "I'm a AI Developer",
+          "tag": "h3",
+          "bbox": {
+            "x": 154,
+            "y": 1025,
+            "width": 617,
+            "height": 45
+          },
+          "center": {
+            "x": 462.5,
+            "y": 1047.5
+          }
+        },
+        {
+          "id": "el_835817f5",
+          "text": "And I'm AI Developer|",
+          "tag": "h3",
+          "bbox": {
+            "x": 484,
+            "y": 298,
+            "width": 667,
+            "height": 56
+          },
+          "center": {
+            "x": 817.5,
+            "y": 326.0
+          }
+        }
+      ],
+      "camera": {
+        "movement": "zoom_in",
+        "zoom_level": 1.15,
+        "target_element_text": "Sumit",
+        "focus_point": {
+          "x": 817.5,
+          "y": 259.0
+        },
+        "camera_bias": "center",
+        "scroll_intent": "none",
+        "movement_speed": "medium",
+        "ease": "ease_in_out",
+        "motion_strength": "subtle",
+        "transition_in": "fade",
+        "duration_factor": 1.0,
+        "confidence": 0.6,
+        "focus_reason": "heuristic fallback",
+        "source": "fallback"
+      }
+    },
+    {
+      "scene_id": 2,
+      "type": "skills showcase",
+      "title": "My AI Development Skills",
+      "content": "Here's a look at my technical skills in AI development. I also bring strong soft skills to any team.",
+      "priority": 9,
+      "duration_hint": 4,
+      "elements": [
+        {
+          "id": "el_205c713c",
+          "text": "My Skills",
+          "tag": "h1",
+          "bbox": {
+            "x": 0,
+            "y": 1440,
+            "width": 1265,
+            "height": 190
+          },
+          "center": {
+            "x": 632.5,
+            "y": 1535.0
+          }
+        },
+        {
+          "id": "el_582c1a70",
+          "text": "Soft Skills",
+          "tag": "h2",
+          "bbox": {
+            "x": 367,
+            "y": 2413,
+            "width": 560,
+            "height": 58
+          },
+          "center": {
+            "x": 647.0,
+            "y": 2442.0
+          }
+        }
+      ],
+      "camera": {
+        "movement": "scroll_down",
+        "zoom_level": 1.1,
+        "target_element_text": "My Skills",
+        "focus_point": {
+          "x": 632.5,
+          "y": 1535.0
+        },
+        "camera_bias": "center",
+        "scroll_intent": "down",
+        "movement_speed": "medium",
+        "ease": "ease_in",
+        "motion_strength": "subtle",
+        "transition_in": "smooth_scroll",
+        "duration_factor": 1.0,
+        "confidence": 0.6,
+        "focus_reason": "heuristic fallback",
+        "source": "fallback"
+      }
+    },
+    {
+      "scene_id": 3,
+      "type": "project highlights",
+      "title": "Featured AI Projects",
+      "content": "Explore my projects to see my work in action. You can view live examples or learn more about them.",
+      "priority": 8,
+      "duration_hint": 6,
+      "elements": [
+        {
+          "id": "el_b207f25d",
+          "text": "My Project",
+          "tag": "h2",
+          "bbox": {
+            "x": 114,
+            "y": 3021,
+            "width": 1037,
+            "height": 90
+          },
+          "center": {
+            "x": 632.5,
+            "y": 3066.0
+          }
+        },
+        {
+          "id": "el_9757f1c3",
+          "text": "View Projects",
+          "tag": "button",
+          "bbox": {
+            "x": 696,
+            "y": 596,
+            "width": 146,
+            "height": 41
+          },
+          "center": {
+            "x": 769.0,
+            "y": 616.5
+          }
+        },
+        {
+          "id": "el_f2bcfa01",
+          "text": "Live Project",
+          "tag": "link",
+          "bbox": {
+            "x": 114,
+            "y": 3884,
+            "width": 56,
+            "height": 56
+          },
+          "center": {
+            "x": 142.0,
+            "y": 3912.0
+          }
+        },
+        {
+          "id": "el_b7ad613f",
+          "text": "Project",
+          "tag": "link",
+          "bbox": {
+            "x": 981,
+            "y": 23,
+            "width": 69,
+            "height": 28
+          },
+          "center": {
+            "x": 1015.5,
+            "y": 37.0
+          }
+        }
+      ],
+      "camera": {
+        "movement": "zoom_in",
+        "zoom_level": 1.1,
+        "target_element_text": "View Projects",
+        "focus_point": {
+          "x": 769.0,
+          "y": 616.5
+        },
+        "camera_bias": "center",
+        "scroll_intent": "none",
+        "movement_speed": "slow",
+        "ease": "ease_in",
+        "motion_strength": "subtle",
+        "transition_in": "cut",
+        "duration_factor": 1.0,
+        "confidence": 0.6,
+        "focus_reason": "heuristic fallback",
+        "source": "fallback"
+      }
+    },
+    {
+      "scene_id": 4,
+      "type": "call to action",
+      "title": "Let's Connect and Collaborate",
+      "content": "I'm ready to discuss your next project. Feel free to download my resume for more details or get in touch directly.",
+      "priority": 7,
+      "duration_hint": 5,
+      "elements": [
+        {
+          "id": "el_970dfb8a",
+          "text": "Let's Work Together",
+          "tag": "h1",
+          "bbox": {
+            "x": 20,
+            "y": 3980,
+            "width": 1225,
+            "height": 90
+          },
+          "center": {
+            "x": 632.5,
+            "y": 4025.0
+          }
+        },
+        {
+          "id": "el_80785d29",
+          "text": "Download Resume",
+          "tag": "button",
+          "bbox": {
+            "x": 484,
+            "y": 596,
+            "width": 189,
+            "height": 41
+          },
+          "center": {
+            "x": 578.5,
+            "y": 616.5
+          }
+        },
+        {
+          "id": "el_a98570a8",
+          "text": "Download Resume",
+          "tag": "link",
+          "bbox": {
+            "x": 500,
+            "y": 605,
+            "width": 157,
+            "height": 22
+          },
+          "center": {
+            "x": 578.5,
+            "y": 616.0
+          }
+        },
+        {
+          "id": "el_bc33ad13",
+          "text": "Contact Me!",
+          "tag": "h2",
+          "bbox": {
+            "x": 622,
+            "y": 4160,
+            "width": 550,
+            "height": 68
+          },
+          "center": {
+            "x": 897.0,
+            "y": 4194.0
+          }
+        },
+        {
+          "id": "el_3dd01889",
+          "text": "Contact",
+          "tag": "link",
+          "bbox": {
+            "x": 1110,
+            "y": 23,
+            "width": 79,
+            "height": 28
+          },
+          "center": {
+            "x": 1149.5,
+            "y": 37.0
+          }
+        }
+      ],
+      "camera": {
+        "movement": "scroll_down",
+        "zoom_level": 1.1,
+        "target_element_text": "Download Resume",
+        "focus_point": {
+          "x": 578.5,
+          "y": 616.5
+        },
+        "camera_bias": "center",
+        "scroll_intent": "down",
+        "movement_speed": "medium",
+        "ease": "ease_in",
+        "motion_strength": "subtle",
+        "transition_in": "smooth_scroll",
+        "duration_factor": 1.0,
+        "confidence": 0.6,
+        "focus_reason": "heuristic fallback",
+        "source": "fallback"
+      }
+    }
+  ],
+  "3e2556af26b639cfd651f961efb18a47": [
+    {
+      "scene_id": 1,
+      "type": "hero_intro",
+      "title": "Personal Introduction",
+      "content": "Hello, I'm Sumit and I'm an AI Developer specializing in building intelligent solutions.",
+      "priority": 10,
+      "duration_hint": 6,
+      "elements": [
+        {
+          "id": "el_70108252",
+          "text": "Hello, I'm",
+          "tag": "h3",
+          "bbox": {
+            "x": 484,
+            "y": 164,
+            "width": 667,
+            "height": 56
+          },
+          "center": {
+            "x": 817.5,
+            "y": 192.0
+          }
+        },
+        {
+          "id": "el_0248ebce",
+          "text": "And I'm AI Developer|",
+          "tag": "h3",
+          "bbox": {
+            "x": 484,
+            "y": 298,
+            "width": 667,
+            "height": 56
+          },
+          "center": {
+            "x": 817.5,
+            "y": 326.0
+          }
+        },
+        {
+          "id": "el_9caaa807",
+          "text": "Sumit",
+          "tag": "h1",
+          "bbox": {
+            "x": 484,
+            "y": 220,
+            "width": 667,
+            "height": 78
+          },
+          "center": {
+            "x": 817.5,
+            "y": 259.0
+          }
+        },
+        {
+          "id": "el_385f50ab",
+          "text": "I'm a AI Developer",
+          "tag": "h3",
+          "bbox": {
+            "x": 154,
+            "y": 1025,
+            "width": 617,
+            "height": 45
+          },
+          "center": {
+            "x": 462.5,
+            "y": 1047.5
+          }
+        }
+      ],
+      "camera": {
+        "movement": "zoom_in",
+        "zoom_level": 1.2,
+        "target_element_text": "Sumit",
+        "focus_point": {
+          "x": 818,
+          "y": 259
+        },
+        "camera_bias": "center",
+        "scroll_intent": "none",
+        "movement_speed": "slow",
+        "ease": "ease_in_out",
+        "motion_strength": "subtle",
+        "transition_in": "fade",
+        "duration_factor": 1.0,
+        "confidence": 0.9,
+        "focus_reason": "h1 priority",
+        "source": "groq"
+      }
+    },
+    {
+      "scene_id": 2,
+      "type": "skills_overview",
+      "title": "Technical and Soft Skills",
+      "content": "Here's a look at my technical expertise and the soft skills that help me collaborate effectively on any team.",
+      "priority": 9,
+      "duration_hint": 7,
+      "elements": [
+        {
+          "id": "el_6db4cf09",
+          "text": "My Skills",
+          "tag": "h1",
+          "bbox": {
+            "x": 0,
+            "y": 1440,
+            "width": 1265,
+            "height": 190
+          },
+          "center": {
+            "x": 632.5,
+            "y": 1535.0
+          }
+        },
+        {
+          "id": "el_c4578ce8",
+          "text": "Soft Skills",
+          "tag": "h2",
+          "bbox": {
+            "x": 367,
+            "y": 2413,
+            "width": 560,
+            "height": 58
+          },
+          "center": {
+            "x": 647.0,
+            "y": 2442.0
+          }
+        }
+      ],
+      "camera": {
+        "movement": "scroll_down",
+        "zoom_level": 1.1,
+        "target_element_text": "My Skills",
+        "focus_point": {
+          "x": 632,
+          "y": 1535
+        },
+        "camera_bias": "center",
+        "scroll_intent": "down",
+        "movement_speed": "slow",
+        "ease": "ease_in",
+        "motion_strength": "subtle",
+        "transition_in": "smooth_scroll",
+        "duration_factor": 1.0,
+        "confidence": 0.8,
+        "focus_reason": "highest priority element",
+        "source": "groq"
+      }
+    },
+    {
+      "scene_id": 3,
+      "type": "project_showcase",
+      "title": "Featured Projects",
+      "content": "Check out one of my key projects and explore the live version to see my work in action.",
+      "priority": 8,
+      "duration_hint": 8,
+      "elements": [
+        {
+          "id": "el_19eebcee",
+          "text": "My Project",
+          "tag": "h2",
+          "bbox": {
+            "x": 114,
+            "y": 3021,
+            "width": 1037,
+            "height": 90
+          },
+          "center": {
+            "x": 632.5,
+            "y": 3066.0
+          }
+        },
+        {
+          "id": "el_240af8af",
+          "text": "Project",
+          "tag": "link",
+          "bbox": {
+            "x": 981,
+            "y": 23,
+            "width": 69,
+            "height": 28
+          },
+          "center": {
+            "x": 1015.5,
+            "y": 37.0
+          }
+        },
+        {
+          "id": "el_27ce69bb",
+          "text": "Live Project",
+          "tag": "link",
+          "bbox": {
+            "x": 114,
+            "y": 3884,
+            "width": 56,
+            "height": 56
+          },
+          "center": {
+            "x": 142.0,
+            "y": 3912.0
+          }
+        },
+        {
+          "id": "el_2b4d032a",
+          "text": "View Projects",
+          "tag": "button",
+          "bbox": {
+            "x": 696,
+            "y": 596,
+            "width": 146,
+            "height": 41
+          },
+          "center": {
+            "x": 769.0,
+            "y": 616.5
+          }
+        }
+      ],
+      "camera": {
+        "movement": "zoom_in",
+        "zoom_level": 1.4,
+        "target_element_text": "View Projects",
+        "focus_point": {
+          "x": 769,
+          "y": 616
+        },
+        "camera_bias": "center",
+        "scroll_intent": "none",
+        "movement_speed": "slow",
+        "ease": "ease_in_out",
+        "motion_strength": "moderate",
+        "transition_in": "cut",
+        "duration_factor": 1.0,
+        "confidence": 0.9,
+        "focus_reason": "button priority",
+        "source": "groq"
+      }
+    },
+    {
+      "scene_id": 4,
+      "type": "resume_action",
+      "title": "Download Resume",
+      "content": "Want to learn more about my experience? Download my resume with a single click.",
+      "priority": 7,
+      "duration_hint": 4,
+      "elements": [
+        {
+          "id": "el_f4926e55",
+          "text": "Download Resume",
+          "tag": "button",
+          "bbox": {
+            "x": 484,
+            "y": 596,
+            "width": 189,
+            "height": 41
+          },
+          "center": {
+            "x": 578.5,
+            "y": 616.5
+          }
+        },
+        {
+          "id": "el_f7994f1d",
+          "text": "Download Resume",
+          "tag": "link",
+          "bbox": {
+            "x": 500,
+            "y": 605,
+            "width": 157,
+            "height": 22
+          },
+          "center": {
+            "x": 578.5,
+            "y": 616.0
+          }
+        }
+      ],
+      "camera": {
+        "movement": "zoom_in",
+        "zoom_level": 1.6,
+        "target_element_text": "Download Resume",
+        "focus_point": {
+          "x": 578,
+          "y": 616
+        },
+        "camera_bias": "center",
+        "scroll_intent": "none",
+        "movement_speed": "medium",
+        "ease": "ease_in_out",
+        "motion_strength": "strong",
+        "transition_in": "cut",
+        "duration_factor": 1.0,
+        "confidence": 0.9,
+        "focus_reason": "button",
+        "source": "groq"
+      }
+    },
+    {
+      "scene_id": 5,
+      "type": "contact_cta",
+      "title": "Get In Touch",
+      "content": "Let's work together! Reach out through any of these channels to start a conversation.",
+      "priority": 6,
+      "duration_hint": 5,
+      "elements": [
+        {
+          "id": "el_08eb8b41",
+          "text": "Let's Work Together",
+          "tag": "h1",
+          "bbox": {
+            "x": 20,
+            "y": 3980,
+            "width": 1225,
+            "height": 90
+          },
+          "center": {
+            "x": 632.5,
+            "y": 4025.0
+          }
+        },
+        {
+          "id": "el_a6446110",
+          "text": "Contact Me!",
+          "tag": "h2",
+          "bbox": {
+            "x": 622,
+            "y": 4160,
+            "width": 550,
+            "height": 68
+          },
+          "center": {
+            "x": 897.0,
+            "y": 4194.0
+          }
+        },
+        {
+          "id": "el_f95484f2",
+          "text": "Contact",
+          "tag": "link",
+          "bbox": {
+            "x": 1110,
+            "y": 23,
+            "width": 79,
+            "height": 28
+          },
+          "center": {
+            "x": 1149.5,
+            "y": 37.0
+          }
+        }
+      ],
+      "camera": {
+        "movement": "zoom_in",
+        "zoom_level": 1.6,
+        "target_element_text": "Contact",
+        "focus_point": {
+          "x": 1150,
+          "y": 37
+        },
+        "camera_bias": "right",
+        "scroll_intent": "none",
+        "movement_speed": "medium",
+        "ease": "ease_in_out",
+        "motion_strength": "strong",
+        "transition_in": "cut",
+        "duration_factor": 1.0,
+        "confidence": 0.9,
+        "focus_reason": "highest priority element",
+        "source": "groq"
+      }
+    }
+  ]
 }

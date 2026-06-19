@@ -2,7 +2,7 @@ from playwright.sync_api import sync_playwright
 from utils import clean_list , clean_text
 from importance_engine import rank_importance
 from purpose_engine import detect_purpose
-from cleaner import clean_website_data
+from cleaner_old import clean_website_data
 import json
 
 
